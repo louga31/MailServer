@@ -1,7 +1,7 @@
 .env
 Caddyfile
 data/**
-config/*
+config/
 !data/rainloop/
 !data/rainloop/_data_/
 !data/rainloop/_data_/_default_/
