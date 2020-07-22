@@ -1,0 +1,50 @@
+version: '3.8'
+services:
+    mail:
+        container_name: mail-server
+        image: tvial/docker-mailserver
+        restart: always
+        hostname: ${HOSTNAME}
+        domainname: ${DOMAINNAME}
+        ports:
+            - "25:25"
+            - "143:143"
+            - "587:587"
+            - "993:993"
+        volumes:
+            - ./data/mail/data:/var/mail
+            - ./data/mail/state:/var/mail-state
+            - ./data/mail/logs:/var/log/mail
+            - ./config/:/tmp/docker-mailserver/
+        env_file:
+            - env-mailserver
+        cap_add:
+            - NET_ADMIN
+            - SYS_PTRACE
+    rainloop:
+        container_name: webmail
+        image: hardware/rainloop
+        depends_on:
+            - mail
+        volumes:
+            - ./data/rainloop:/rainloop/data
+    password-managment:
+        container_name: password-changer
+        image: knappmeier/docker-mailserver-management
+        restart: always
+        volumes:
+            - ./config/:/tmp/docker-mailserver/
+    caddy:
+        container_name: webserver
+        image: caddy
+        restart: always
+        privileged: true
+        links:
+            - rainloop
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./Caddyfile:/etc/caddy/Caddyfile
+            - ./data/caddy/data:/data
+            - ./data/caddy/config:/config

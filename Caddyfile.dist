@@ -1,0 +1,7 @@
+mail.domain.com {
+    reverse_proxy rainloop:8888
+}
+
+api.mail.domain.com {
+    reverse_proxy password-managment:3000
+}

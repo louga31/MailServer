@@ -1,0 +1,10 @@
+.env
+Caddyfile
+data/**
+config/*
+!data/rainloop/
+!data/rainloop/_data_/
+!data/rainloop/_data_/_default_/
+!data/rainloop/_data_/_default_/plugins/
+!data/rainloop/_data_/_default_/plugins/change-password-mailserver
+!data/rainloop/_data_/_default_/plugins/change-password-mailserver/**
